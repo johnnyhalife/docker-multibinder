@@ -1,0 +1,19 @@
+global
+    user haproxy
+    group haproxy
+    daemon
+    maxconn 256
+
+defaults
+    mode http
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend http-in
+    bind <%= bind_tcp('0.0.0.0', 80) %>
+    
+    default_backend site
+    
+backend site
+   server s1 static-v2:3000
