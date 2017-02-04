@@ -57,7 +57,7 @@ docker build -t static .
 And now let's run it, as this is the v1 of our app, we'll make `v1.html` the index.html in this case. 
 
 ```bash
-docker run -it --rm --name static-v1 -v $(PWD)/V1.html:/usr/src/index.html --network test static
+docker run -it --rm --name static-v1 -v ${PWD}/v1.html:/usr/src/index.html --network test static
 ```
 
 ### 3. Run the first HAProxy container
@@ -72,7 +72,7 @@ docker build -t haproxy .
 And now let's run it, as this is the v1 of our app, we'll make `site.v1.cfg.erb` the `haproxy.cfg` template in this case.
 
 ```bash
-docker run -it --rm --network test -v $(PWD)/site.v1.cfg.erb:/etc/haproxy/site.cfg.erb -v test-volume:/run haproxy
+docker run -it --rm --network test -v ${PWD}/site.v1.cfg.erb:/etc/haproxy/site.cfg.erb -v test-volume:/run haproxy
 ```
 
 At this point if navigate to http://localhost you should get `V1` as the server response.
@@ -92,14 +92,14 @@ Now that that we have the v1 of our app, we're going to publish a new version. W
 As this is the same image we built before, we don't need to rebuild it.
 
 ```bash
-docker run -it --rm --name static-v2 -v $(PWD)/V2.html:/usr/src/index.html --network test static
+docker run -it --rm --name static-v2 -v ${PWD}/v2.html:/usr/src/index.html --network test static
 ```
 
 ### 6. Run the second version (configuration) of the HAProxy.
 This container based on the previous image we built but with `site.v2.cfg.erb` as the config will also hook up to the `.sock` file created by `multibinder`. 
 
 ```bash
-docker run -it --rm --network test -v $(PWD)/site.v2.cfg.erb:/etc/haproxy/site.cfg.erb -v test-volume:/run haproxy
+docker run -it --rm --network test -v ${PWD}/site.v2.cfg.erb:/etc/haproxy/site.cfg.erb -v test-volume:/run haproxy
 ```
 
 At this point you will see on the output test script that some V2 already: 
